@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellarsync Dashboard - Complete UX</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN for the Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- Lucide Icons CDN for visual elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* Define the custom light theme colors and fonts */
+        :root {
+            --color-bg-light: #F8FAFC; /* Light gray background */
+            --color-card-light: #FFFFFF; /* White card background */
+            --color-primary-purple: #8B5CF6; /* Violet-500 */
+            --color-text-dark: #1E293B; /* Slate-800 */
+            --color-text-faint: #64748B; /* Slate-500 */
+        }
+
+        body {
+            background-color: var(--color-bg-light);
+            color: var(--color-text-dark);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Custom Card Styles for subtle shadow */
+        .dashboard-card {
+            background-color: var(--color-card-light);
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+            transition: all 0.2s ease;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            background-color: var(--color-card-light);
+            border-right: 1px solid #E2E8F0; /* Slate-200 */
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            color: var(--color-text-faint);
+            transition: background-color 0.2s, color 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-link.active {
+            background-color: #F3F8FF; /* Light blue/gray tint */
+            color: var(--color-primary-purple);
+            font-weight: 600;
+        }
+
+        .nav-link:hover {
+            background-color: #F1F5F9; /* Subtle hover */
+        }
+        
+        /* Project Card Styling with specific background gradients */
+        .project-card-figma { background: linear-gradient(135deg, #F5F3FF, #EDE9FE); border: 1px solid #DDD6FE; }
+        .project-card-react { background: linear-gradient(135deg, #F0FFF4, #E9FAE9); border: 1px solid #D1FAE5; }
+        .project-card-static { background: linear-gradient(135deg, #FFF7ED, #FFF1D8); border: 1px solid #FDE68A; }
+        .project-card-mobile { background: linear-gradient(135deg, #F3F8FF, #E7F0FF); border: 1px solid #BFDBFE; }
+
+        /* Tag Colors */
+        .tag-purple { background-color: #E9D5FF; color: #9333EA; } /* In Progress */
+        .tag-green { background-color: #D1FAE5; color: #10B981; } /* Completed */
+        .tag-orange { background-color: #FFEDD5; color: #F97316; } /* Planning */
+
+        /* Utility for Avatar Group */
+        .avatar-group > img {
+            border: 2px solid white;
+            margin-left: -0.5rem;
+        }
+        .avatar-group > img:first-child {
+            margin-left: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- 1. Sidebar -->
+    <div class="sidebar hidden lg:flex">
+        <div class="flex justify-between items-center mb-10">
+            <div class="flex items-center space-x-2">
+                <i data-lucide="sun" class="w-6 h-6 text-yellow-500"></i>
+                <span class="text-xl font-extrabold text-gray-800">Stellarsync</span>
+            </div>
+            <i data-lucide="align-left" class="w-5 h-5 text-gray-400 cursor-pointer"></i>
+        </div>
+
+        <!-- Main Menu -->
+        <div class="mb-8">
+            <h3 class="text-xs font-bold text-gray-400 uppercase mb-3 px-4">Main Menu</h3>
+            <nav class="space-y-1" id="main-nav">
+                <a href="#" class="nav-link" data-view="dashboard">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="#" class="nav-link" data-view="search">
+                    <i data-lucide="search" class="w-5 h-5 mr-3"></i>
+                    Search
+                </a>
+                <a href="#" class="nav-link" data-view="projects">
+                    <i data-lucide="folder" class="w-5 h-5 mr-3"></i>
+                    Projects
+                </a>
+                <a href="#" class="nav-link" data-view="tasks">
+                    <i data-lucide="check-square" class="w-5 h-5 mr-3"></i>
+                    My Tasks
+                </a>
+                <a href="#" class="nav-link" data-view="kanban">
+                    <i data-lucide="columns-2" class="w-5 h-5 mr-3"></i>
+                    Kanban desk
+                </a>
+                <a href="#" class="nav-link" data-view="calendar">
+                    <i data-lucide="calendar" class="w-5 h-5 mr-3"></i>
+                    Calendar
+                </a>
+                <a href="#" class="nav-link" data-view="contacts">
+                    <i data-lucide="users" class="w-5 h-5 mr-3"></i>
+                    Contacts
+                </a>
+                <a href="#" class="nav-link" data-view="notifications">
+                    <i data-lucide="bell" class="w-5 h-5 mr-3"></i>
+                    Notifications
+                </a>
+            </nav>
+        </div>
+
+        <!-- Latest Projects & Messages (Keeping existing content for consistency) -->
+        <div class="mb-8">
+            <h3 class="text-xs font-bold text-gray-400 uppercase mb-3 px-4">Latest Projects</h3>
+            <div class="space-y-2">
+                <div class="flex items-center justify-between px-4 py-2">
+                    <span class="text-sm font-medium">Figma Design</span>
+                    <span class="text-xs font-semibold tag-purple px-2 py-0.5 rounded-full">Progress</span>
+                </div>
+                <div class="flex items-center justify-between px-4 py-2">
+                    <span class="text-sm font-medium">Mobile App</span>
+                    <span class="text-xs font-semibold tag-orange px-2 py-0.5 rounded-full">Planning</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <h3 class="text-xs font-bold text-gray-400 uppercase mb-3 px-4">Latest Message</h3>
+            <div class="space-y-3">
+                <!-- Message 1 -->
+                <div class="flex items-center justify-between px-4 py-1 cursor-pointer hover:bg-gray-50 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://placehold.co/32x32/E9D5FF/8B5CF6?text=JC" alt="Jane Cooper" class="rounded-full">
+                        <div>
+                            <p class="text-sm font-semibold">Jane Cooper</p>
+                            <p class="text-xs text-gray-400">UI/UX Designer</p>
+                        </div>
+                    </div>
+                    <span class="text-xs text-gray-400">2m</span>
+                </div>
+                <!-- Message 2 -->
+                <div class="flex items-center justify-between px-4 py-1 cursor-pointer hover:bg-gray-50 rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://placehold.co/32x32/D1FAE5/10B981?text=BS" alt="Brooklyn Simmons" class="rounded-full">
+                        <p class="text-sm font-semibold">Brooklyn Simmons</p>
+                    </div>
+                    <span class="text-xs text-gray-400">1h</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- User Profile (Bottom) -->
+        <div class="mt-auto pt-4 border-t border-gray-200">
+            <div class="flex items-center space-x-3 p-2 rounded-lg bg-gray-50">
+                <img src="https://placehold.co/40x40/FFD700/000000?text=YI" alt="Yeasin Islam" class="rounded-full">
+                <div>
+                    <p class="text-sm font-semibold">Yeasin Islam</p>
+                    <p class="text-xs text-gray-400">UI/UX Designer</p>
+                </div>
+                <i data-lucide="chevron-down" class="w-4 h-4 ml-auto text-gray-400"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex-grow p-4 sm:p-6 lg:p-8">
+        <header class="flex justify-between items-center mb-8" id="main-header">
+            <!-- Title will be updated by JS -->
+        </header>
+        
+        <main id="main-content-area">
+            <!-- Content for the active view will be rendered here -->
+        </main>
+    </div>
+
+    <!-- JavaScript for Dynamic Content and Charts -->
+    <script>
+        // --- MOCK DATA ---
+        const MOCK_PROJECTS = [
+            { id: 1, name: 'Figma Design System', status: 'In Progress', progress: 70, team: 7, tasks: 34, files: 18, type: 'figma' },
+            { id: 2, name: 'Keep React', status: 'Planning', progress: 10, team: 9, tasks: 33, files: 96, type: 'react' },
+            { id: 3, name: 'StaticMania', status: 'In Progress', progress: 50, team: 8, tasks: 15, files: 76, type: 'static' },
+            { id: 4, name: 'Mobile App V2', status: 'Completed', progress: 100, team: 10, tasks: 24, files: 77, type: 'mobile' },
+            { id: 5, name: 'SaaS Backend API', status: 'In Progress', progress: 90, team: 5, tasks: 45, files: 22, type: 'react' },
+            { id: 6, name: 'Marketing Campaign', status: 'Completed', progress: 100, team: 3, tasks: 10, files: 5, type: 'static' },
+        ];
+
+        let MOCK_TASKS = [
+            { id: 1, text: 'Review Figma Design System Wireframes', completed: false },
+            { id: 2, text: 'Set up initial React component structure', completed: true },
+            { id: 3, text: 'Write database schemas for API', completed: false },
+            { id: 4, text: 'Schedule weekly team standup meeting', completed: false },
+        ];
+
+        const MOCK_TEAM = [
+            { id: 101, name: 'Alice Johnson', role: 'Lead Developer', performance: 95, tasksCompleted: 42, avatar: 'A' },
+            { id: 102, name: 'Bob Smith', role: 'UI/UX Designer', performance: 88, tasksCompleted: 35, avatar: 'B' },
+            { id: 103, name: 'Charlie Brown', role: 'Project Manager', performance: 79, tasksCompleted: 28, avatar: 'C' },
+            { id: 104, name: 'Diana Prince', role: 'QA Engineer', performance: 92, tasksCompleted: 40, avatar: 'D' },
+        ];
+        
+        let currentView = 'dashboard';
+        let analyticsChartInstance = null;
+        let projectChartInstance = null;
+
+        // --- CHART HELPER FUNCTIONS ---
+        const createGradient = (ctx, color) => {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+            const rgb = `rgba(${parseInt(color.slice(1, 3), 16)}, ${parseInt(color.slice(3, 5), 16)}, ${parseInt(color.slice(5, 7), 16)}`;
+            gradient.addColorStop(0, `${rgb}, 0.5)`);
+            gradient.addColorStop(1, `${rgb}, 0)`);
+            return gradient;
+        };
+
+        const initializeCharts = () => {
+            // Destroy existing charts to prevent memory leaks/re-rendering issues
+            if (analyticsChartInstance) analyticsChartInstance.destroy();
+            if (projectChartInstance) projectChartInstance.destroy();
+
+            // 1. Project Analytics (Line Chart)
+            const analyticsCtx = document.getElementById('analyticsChart')?.getContext('2d');
+            if (analyticsCtx) {
+                const chartColors = { purple: '#8B5CF6', green: '#10B981' };
+                const analyticsData = {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [
+                        {
+                            label: 'Completed',
+                            data: [20, 30, 45, 38, 50, 42, 55, 48, 60, 52, 65, 58],
+                            borderColor: chartColors.green,
+                            backgroundColor: createGradient(analyticsCtx, chartColors.green),
+                            borderWidth: 2, tension: 0.4, pointRadius: 0, fill: true,
+                        },
+                        {
+                            label: 'In Progress',
+                            data: [30, 40, 55, 48, 60, 52, 65, 58, 70, 62, 75, 68],
+                            borderColor: chartColors.purple,
+                            backgroundColor: createGradient(analyticsCtx, chartColors.purple),
+                            borderWidth: 2, tension: 0.4, pointRadius: 0, fill: true,
+                        }
+                    ]
+                };
+
+                analyticsChartInstance = new Chart(analyticsCtx, {
+                    type: 'line', data: analyticsData,
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+                        scales: { y: { beginAtZero: true, ticks: { color: 'var(--color-text-faint)' }, grid: { color: '#E2E8F0', drawBorder: false } },
+                            x: { ticks: { color: 'var(--color-text-faint)' }, grid: { display: false } }
+                        }, layout: { padding: { left: 0, right: 0, top: 10, bottom: 0 } }
+                    }
+                });
+            }
+
+            // 2. My Project (Donut Chart)
+            const projectCtx = document.getElementById('myProjectChart')?.getContext('2d');
+            if (projectCtx) {
+                const projectData = {
+                    labels: ['Completed', 'In Progress', 'Not Started'],
+                    datasets: [{
+                        data: [40, 20, 40], 
+                        backgroundColor: ['#3B82F6', '#8B5CF6', '#10B981'],
+                        hoverOffset: 4, borderWidth: 0,
+                    }]
+                };
+
+                projectChartInstance = new Chart(projectCtx, {
+                    type: 'doughnut', data: projectData,
+                    options: { responsive: true, maintainAspectRatio: false, cutout: '80%', plugins: { legend: { display: false }, tooltip: { enabled: false } } }
+                });
+            }
+        };
+
+        // --- RENDER VIEW FUNCTIONS (HTML TEMPLATES) ---
+
+        const renderHeader = (title, subtitle = 'Overview') => {
+            document.getElementById('main-header').innerHTML = `
+                <h1 class="text-2xl font-semibold">${title} / <span class="text-gray-500">${subtitle}</span></h1>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="nav-icon text-gray-500 hover:text-gray-700">
+                        <i data-lucide="upload" class="w-5 h-5"></i>
+                    </button>
+                    <button class="nav-icon text-gray-500 hover:text-gray-700">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                    </button>
+                    <button class="flex items-center space-x-2 bg-purple-500 text-white px-4 py-2 rounded-xl font-semibold hover:bg-purple-600 transition-colors" data-view="add-project">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                        <span>Add Project</span>
+                    </button>
+                    <img src="https://placehold.co/40x40/8B5CF6/FFFFFF?text=P" alt="Profile" class="rounded-full ring-2 ring-purple-500 w-10 h-10 cursor-pointer hidden sm:block">
+                </div>
+            `;
+            // Re-initialize icons for the header
+            lucide.createIcons();
+        };
+
+        const projectCardTemplate = (project) => {
+            const statusMap = {
+                'In Progress': { tag: 'tag-purple', color: 'bg-purple-500' },
+                'Planning': { tag: 'tag-orange', color: 'bg-green-500' },
+                'Completed': { tag: 'tag-green', color: 'bg-blue-500' },
+            };
+            const themeMap = {
+                'figma': 'project-card-figma',
+                'react': 'project-card-react',
+                'static': 'project-card-static',
+                'mobile': 'project-card-mobile',
+            };
+            const statusInfo = statusMap[project.status] || statusMap['In Progress'];
+            const themeClass = themeMap[project.type] || themeMap['figma'];
+            
+            return `
+                <div class="dashboard-card p-5 ${themeClass}">
+                    <span class="text-xs font-semibold ${statusInfo.tag} px-2 py-0.5 rounded-full mb-3 inline-block">${project.status}</span>
+                    <h3 class="text-lg font-bold">${project.name}</h3>
+                    <p class="text-sm text-gray-600 mb-4">Project ID: #${project.id}</p>
+                    
+                    <div class="flex items-center justify-between text-xs text-gray-500 mb-2">
+                        <div class="flex items-center">
+                            <i data-lucide="calendar" class="w-3 h-3 mr-1"></i>
+                            <span class="font-medium">Due: Nov 25</span>
+                        </div>
+                        <span class="font-bold">${project.progress}%</span>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                        <div class="${statusInfo.color} h-2 rounded-full" style="width: ${project.progress}%"></div>
+                    </div>
+
+                    <!-- Avatars & Stats -->
+                    <div class="flex justify-between items-center">
+                        <div class="flex avatar-group">
+                            <img src="https://placehold.co/28x28/${project.team + 1}x${project.team + 1}/8B5CF6/FFFFFF?text=T" class="rounded-full w-7 h-7" alt="Avatar A">
+                            <img src="https://placehold.co/28x28/${project.team + 2}x${project.team + 2}/34D399/FFFFFF?text=S" class="rounded-full w-7 h-7" alt="Avatar B">
+                            <div class="rounded-full w-7 h-7 bg-white text-xs font-semibold flex items-center justify-center text-gray-500 border border-gray-300">+${project.team}</div>
+                        </div>
+                        <div class="flex space-x-2 text-sm text-gray-500">
+                            <div class="flex items-center">
+                                <i data-lucide="message-square" class="w-4 h-4 mr-1"></i>
+                                <span>${project.tasks}</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i data-lucide="paperclip" class="w-4 h-4 mr-1"></i>
+                                <span>${project.files}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+        
+        // --- VIEW 1: DASHBOARD ---
+        const renderDashboard = () => {
+            renderHeader('Dashboard', 'Overview');
+            
+            const html = `
+                <!-- 3. Top Metrics (4 Cards) -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                    <!-- Metric Card 1: Total Project -->
+                    <div class="dashboard-card p-5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-3xl font-bold">${MOCK_PROJECTS.length}</h3>
+                            <i data-lucide="folder" class="w-6 h-6 text-gray-400"></i>
+                        </div>
+                        <p class="text-sm text-gray-500 font-medium">Total Project</p>
+                        <div class="mt-4 text-xs flex justify-between items-center text-gray-400">
+                            <span>from last month</span>
+                            <span class="flex items-center text-green-500 font-semibold">
+                                <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> 12%
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Metric Card 2: In Progress -->
+                    <div class="dashboard-card p-5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-3xl font-bold">${MOCK_PROJECTS.filter(p => p.status === 'In Progress').length}</h3>
+                            <i data-lucide="loader-2" class="w-6 h-6 text-gray-400"></i>
+                        </div>
+                        <p class="text-sm text-gray-500 font-medium">In Progress</p>
+                        <div class="mt-4 text-xs flex justify-between items-center text-gray-400">
+                            <span>from last month</span>
+                            <span class="flex items-center text-red-500 font-semibold">
+                                <i data-lucide="trending-down" class="w-3 h-3 mr-1"></i> 10%
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Metric Card 3: Completed -->
+                    <div class="dashboard-card p-5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-3xl font-bold">${MOCK_PROJECTS.filter(p => p.status === 'Completed').length}</h3>
+                            <i data-lucide="check-circle" class="w-6 h-6 text-gray-400"></i>
+                        </div>
+                        <p class="text-sm text-gray-500 font-medium">Completed</p>
+                        <div class="mt-4 text-xs flex justify-between items-center text-gray-400">
+                            <span>from last month</span>
+                            <span class="flex items-center text-green-500 font-semibold">
+                                <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> 15%
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Metric Card 4: Overdue -->
+                    <div class="dashboard-card p-5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-3xl font-bold">3</h3> <!-- Mock fixed value -->
+                            <i data-lucide="clock" class="w-6 h-6 text-gray-400"></i>
+                        </div>
+                        <p class="text-sm text-gray-500 font-medium">Overdue</p>
+                        <div class="mt-4 text-xs flex justify-between items-center text-gray-400">
+                            <span>from last month</span>
+                            <span class="flex items-center text-red-500 font-semibold">
+                                <i data-lucide="trending-up" class="w-3 h-3 mr-1 rotate-180"></i> 13%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Project Overview (Cards) -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold">Project Overview</h2>
+                        <div class="flex items-center space-x-4">
+                            <button class="text-sm text-gray-500 border border-gray-300 px-3 py-1.5 rounded-xl flex items-center">
+                                <i data-lucide="filter" class="w-4 h-4 mr-1"></i> Filter
+                            </button>
+                            <button class="text-sm text-gray-500 border border-gray-300 px-3 py-1.5 rounded-xl" data-view="projects">
+                                View All
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                        ${MOCK_PROJECTS.slice(0, 4).map(projectCardTemplate).join('')}
+                    </div>
+                </div>
+
+                <!-- 5. Bottom Section: Charts and Team -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left 2/3: Project Analytics & Team -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Project Analytics Chart -->
+                        <div class="dashboard-card p-6">
+                            <h2 class="text-xl font-semibold mb-2">Project Analytics</h2>
+                            <p class="text-sm text-gray-500 mb-6">Task completion and project progress over time</p>
+
+                            <div class="flex justify-end items-center mb-4">
+                                <p class="text-sm font-medium mr-4">Tasks:</p>
+                                <div class="flex items-center space-x-3 text-sm">
+                                    <span class="flex items-center">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-green-500 mr-1"></span>
+                                        Completed: <span class="font-bold ml-1">25</span>
+                                    </span>
+                                    <span class="flex items-center">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-purple-500 mr-1"></span>
+                                        In Progress: <span class="font-bold ml-1">35</span>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="h-60">
+                                <canvas id="analyticsChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Team Performance -->
+                        <div class="dashboard-card p-6">
+                            <h2 class="text-xl font-semibold mb-4">Team Performance & Task Breakdown</h2>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member</th>
+                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Completion</th>
+                                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tasks Done</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        ${MOCK_TEAM.map(member => `
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 flex items-center">
+                                                    <img src="https://placehold.co/32x32/1E293B/FFFFFF?text=${member.avatar}" class="rounded-full w-8 h-8 mr-3" alt="${member.name}">
+                                                    ${member.name}
+                                                </td>
+                                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">${member.role}</td>
+                                                <td class="px-4 py-4 whitespace-nowrap text-sm">
+                                                    <div class="w-20 bg-gray-200 rounded-full h-1.5">
+                                                        <div class="bg-green-500 h-1.5 rounded-full" style="width: ${member.performance}%"></div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">${member.tasksCompleted}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right 1/3: My Project Donut Chart -->
+                    <div class="dashboard-card p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-semibold">My Project</h2>
+                            <div class="relative">
+                                <select class="text-sm text-gray-500 border border-gray-300 p-1.5 rounded-xl appearance-none pr-8 bg-white">
+                                    <option>This month</option>
+                                    <option>Last month</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="w-4 h-4 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="relative flex items-center justify-center h-64">
+                            <canvas id="myProjectChart"></canvas>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <p class="text-4xl font-extrabold text-gray-800">100%</p>
+                                <p class="text-sm text-gray-500">Total Project</p>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-around text-xs mt-4">
+                            <span class="flex items-center text-blue-500">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-500 mr-1"></span>
+                                Completed <span class="font-bold ml-1">40%</span>
+                            </span>
+                            <span class="flex items-center text-purple-500">
+                                <span class="w-2.5 h-2.5 rounded-full bg-purple-500 mr-1"></span>
+                                In Progress
+                            </span>
+                            <span class="flex items-center text-green-500">
+                                <span class="w-2.5 h-2.5 rounded-full bg-green-500 mr-1"></span>
+                                Not Started
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('main-content-area').innerHTML = html;
+            lucide.createIcons(); // Re-initialize icons
+            setTimeout(initializeCharts, 0); // Initialize charts after DOM update
+        };
+
+        // --- VIEW 2: PROJECTS ---
+        const renderProjects = () => {
+            renderHeader('Projects', 'Listing');
+            const projectRows = MOCK_PROJECTS.map(p => {
+                const statusColor = p.status === 'Completed' ? 'tag-green' : p.status === 'In Progress' ? 'tag-purple' : 'tag-orange';
+                return `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${p.name}</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">#${p.id}</td>
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            <span class="text-xs font-semibold ${statusColor} px-2 py-0.5 rounded-full">${p.status}</span>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">${p.team}</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">${p.progress}%</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button class="text-purple-600 hover:text-purple-900">Edit</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            const html = `
+                <div class="dashboard-card p-6">
+                    <h2 class="text-xl font-semibold mb-4">All Active Projects (${MOCK_PROJECTS.length})</h2>
+                    <div class="flex justify-between items-center mb-4">
+                        <input type="text" placeholder="Search projects..." class="border border-gray-300 p-2 rounded-lg w-1/3">
+                        <button class="flex items-center bg-gray-100 text-gray-700 px-3 py-2 rounded-xl text-sm hover:bg-gray-200">
+                            <i data-lucide="arrow-down-up" class="w-4 h-4 mr-1"></i> Sort by
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project Name</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team Size</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Progress</th>
+                                    <th class="px-4 py-3"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${projectRows}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            document.getElementById('main-content-area').innerHTML = html;
+            lucide.createIcons();
+        };
+
+        // --- VIEW 3: MY TASKS (Interactive) ---
+        const renderTasks = () => {
+            renderHeader('My Tasks', 'To-Do List');
+
+            const taskListHtml = MOCK_TASKS.map(task => `
+                <li id="task-${task.id}" class="flex justify-between items-center p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="check-${task.id}" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer" 
+                                ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})">
+                        <label for="check-${task.id}" class="ml-3 text-sm font-medium ${task.completed ? 'line-through text-gray-400' : 'text-gray-900'}">${task.text}</label>
+                    </div>
+                    <button class="text-red-400 hover:text-red-600 p-1 rounded-full hover:bg-red-50" onclick="deleteTask(${task.id})">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </li>
+            `).join('');
+
+            const html = `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 dashboard-card p-6">
+                        <h2 class="text-xl font-semibold mb-6">Actionable Tasks (${MOCK_TASKS.filter(t => !t.completed).length} remaining)</h2>
+                        
+                        <!-- Add Task Form -->
+                        <div class="flex mb-6 space-x-3" id="addTaskForm">
+                            <input type="text" id="newTaskInput" placeholder="Enter a new task..." 
+                                class="flex-grow border border-gray-300 p-3 rounded-xl focus:ring-purple-500 focus:border-purple-500">
+                            <button class="bg-purple-500 text-white px-4 py-3 rounded-xl font-semibold hover:bg-purple-600 transition-colors" onclick="addNewTask()">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+
+                        <!-- Task List -->
+                        <ul class="divide-y divide-gray-200" id="taskList">
+                            ${taskListHtml}
+                        </ul>
+                    </div>
+                    <div class="dashboard-card p-6">
+                        <h2 class="text-xl font-semibold mb-4">Task Stats</h2>
+                        <div class="space-y-4">
+                            <p class="text-sm text-gray-500">Total Tasks: <span class="font-bold text-gray-800">${MOCK_TASKS.length}</span></p>
+                            <p class="text-sm text-gray-500">Completed: <span class="font-bold text-green-500">${MOCK_TASKS.filter(t => t.completed).length}</span></p>
+                            <p class="text-sm text-gray-500">Pending: <span class="font-bold text-red-500">${MOCK_TASKS.filter(t => !t.completed).length}</span></p>
+                            <button class="mt-4 w-full bg-red-100 text-red-600 py-2 rounded-xl hover:bg-red-200 transition-colors" onclick="clearCompleted()">Clear Completed</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('main-content-area').innerHTML = html;
+            lucide.createIcons();
+        };
+
+        // Task List Management functions
+        window.addNewTask = () => {
+            const input = document.getElementById('newTaskInput');
+            const text = input.value.trim();
+            if (text) {
+                const newId = MOCK_TASKS.length > 0 ? Math.max(...MOCK_TASKS.map(t => t.id)) + 1 : 1;
+                MOCK_TASKS.push({ id: newId, text: text, completed: false });
+                input.value = '';
+                renderTasks(); // Re-render the view
+            }
+        };
+
+        window.toggleTask = (id) => {
+            const task = MOCK_TASKS.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                renderTasks(); // Re-render the view
+            }
+        };
+        
+        window.deleteTask = (id) => {
+            MOCK_TASKS = MOCK_TASKS.filter(t => t.id !== id);
+            renderTasks(); // Re-render the view
+        };
+        
+        window.clearCompleted = () => {
+            MOCK_TASKS = MOCK_TASKS.filter(t => !t.completed);
+            renderTasks();
+        };
+
+        // --- VIEW 4: SEARCH (Mock) ---
+        const renderSearch = () => {
+            renderHeader('Search', 'Global Results');
+            const html = `
+                <div class="dashboard-card p-8 text-center">
+                    <i data-lucide="search" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+                    <h2 class="text-2xl font-semibold mb-4">Global Search</h2>
+                    <p class="text-gray-500 mb-6">Search across projects, tasks, contacts, and knowledge base. Enter your query below.</p>
+                    <div class="flex justify-center">
+                        <input type="text" placeholder="Type your query here..." class="border border-gray-300 p-3 rounded-l-xl w-full max-w-lg focus:ring-purple-500 focus:border-purple-500">
+                        <button class="bg-purple-500 text-white px-6 py-3 rounded-r-xl font-semibold hover:bg-purple-600 transition-colors">Search</button>
+                    </div>
+                    <div class="mt-8 text-left max-w-3xl mx-auto space-y-3">
+                        <p class="font-semibold text-gray-700">Recent Searches:</p>
+                        <ul class="list-disc list-inside text-gray-500">
+                            <li>Figma Design System component list</li>
+                            <li>Team member Bob Smith tasks</li>
+                            <li>Due date for Mobile App V2</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            document.getElementById('main-content-area').innerHTML = html;
+            lucide.createIcons();
+        };
+
+        // --- VIEW 5: KANBAN DESK (Mock) ---
+        const renderKanban = () => {
+            renderHeader('Kanban Desk', 'Board View');
+            const html = `
+                <div class="overflow-x-auto p-4 bg-gray-100 rounded-xl min-h-[70vh] flex space-x-4">
+                    <!-- Column Template -->
+                    ${['To Do', 'In Progress', 'Review', 'Done'].map(status => `
+                        <div class="flex-shrink-0 w-80 bg-white p-4 rounded-xl shadow-md h-full">
+                            <h3 class="font-bold text-lg mb-4 flex justify-between items-center">${status} <span class="text-sm text-gray-500 bg-gray-100 px-2 rounded-full">4</span></h3>
+                            <div class="space-y-3">
+                                ${MOCK_PROJECTS.filter((_, i) => i % 4 === (['To Do', 'In Progress', 'Review', 'Done'].indexOf(status))).map(p => `
+                                    <div class="dashboard-card p-3 border-l-4 ${status === 'Done' ? 'border-green-500' : status === 'In Progress' ? 'border-purple-500' : 'border-gray-500'} cursor-grab">
+                                        <p class="text-sm font-medium">${p.name}</p>
+                                        <div class="flex justify-between items-center mt-2 text-xs text-gray-500">
+                                            <span class="tag-purple px-1 rounded-full">${p.status}</span>
+                                            <div class="flex items-center space-x-2">
+                                                <i data-lucide="paperclip" class="w-3 h-3"></i><span>${p.files}</span>
+                                                <i data-lucide="message-square" class="w-3 h-3"></i><span>${p.tasks}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                                <button class="w-full text-purple-500 border border-dashed border-purple-300 py-2 rounded-xl hover:bg-purple-50 transition-colors mt-3">
+                                    + Add New Card
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            document.getElementById('main-content-area').innerHTML = html;
+            lucide.createIcons();
+        };
+
+        // --- VIEW 6: CALENDAR (Mock) ---
+        const renderCalendar = () => {
+            renderHeader('Calendar', 'Schedule');
+            const html = `
+                <div class="dashboard-card p-6">
+                    <h2 class="text-xl font-semibold mb-6">Upcoming Events & Deadlines</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                        <div class="lg:col-span-3">
+                            <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 min-h-[50vh] flex flex-col justify-center items-center">
+                                <i data-lucide="calendar-days" class="w-12 h-12 text-purple-400 mb-3"></i>
+                                <p class="text-lg font-semibold text-gray-700">Calendar Widget Placeholder</p>
+                                <p class="text-sm text-gray-500">Full interactive calendar view would be here.</p>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-1 space-y-3">
+                            <h3 class="text-lg font-semibold border-b pb-2">Today's Events</h3>
+                            ${[
+                                { time: '9:00 AM', event: 'Daily Standup', color: 'bg-green-500' },
+                                { time: '11:00 AM', event: 'Design Review: Figma', color: 'bg-purple-500' },
+                                { time: '2:00 PM', event: 'Backend API Sync', color: 'bg-blue-500' },
+                            ].map(e => `
+                                <div class="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 border-l-4 ${e.color}">
+                                    <div class="text-xs font-bold w-16 text-gray-500">${e.time}</div>
+                                    <div class="text-sm font-medium">${e.event}</div>
+                                </div>
+                            `).join('')}
+                            <button class="w-full text-purple-500 border border-purple-300 py-2 rounded-xl hover:bg-purple-50 transition-colors mt-4">
+                                Add Event
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('main-content-area').innerHTML = html;
+            lucide.createIcons();
+        };
+
+        // --- VIEW 7: CONTACTS (Mock) ---
+        const renderContacts = () => {
+            renderHeader('Contacts', 'Team Directory');
+            const contactRows = MOCK_TEAM.map(m => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 flex items-center">
+                        <img src="https://placehold.co/32x32/1E293B/FFFFFF?text=${m.avatar}" class="rounded-full w-8 h-8 mr-3" alt="${m.name}">
+                        ${m.name}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">${m.role}</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-purple-500">alice@stellarsync.com</td>
+                    <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button class="text-blue-600 hover:text-blue-900">Message</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            const html = `
+                <div class="dashboard-card p-6">
+                    <h2 class="text-xl font-semibold mb-4">Team Directory (${MOCK_TEAM.length} members)</h2>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                    <th class="px-4 py-3"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${contactRows}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            document.getElementById('main-content-area').innerHTML = html;
+            lucide.createIcons();
+        };
+
+        // --- VIEW 8: NOTIFICATIONS (Mock) ---
+        const renderNotifications = () => {
+            renderHeader('Notifications', 'Inbox');
+            const mockNotifications = [
+                { id: 1, text: 'New comment on Figma Design System by Bob Smith.', time: '2 minutes ago', read: false, type: 'comment' },
+                { id: 2, text: 'Project Mobile App V2 marked as Completed.', time: '1 hour ago', read: false, type: 'check-circle' },
+                { id: 3, text: 'Alice Johnson assigned a new task to you.', time: '5 hours ago', read: true, type: 'user-plus' },
+                { id: 4, text: 'System update scheduled for midnight tonight.', time: 'Yesterday', read: true, type: 'alert-triangle' },
+            ];
+
+            const notificationsHtml = mockNotifications.map(n => `
+                <div class="flex items-start space-x-4 p-4 ${n.read ? 'bg-white text-gray-500' : 'bg-purple-50 border-l-4 border-purple-500 text-gray-800'} rounded-xl transition-shadow hover:shadow-md">
+                    <i data-lucide="${n.type}" class="w-5 h-5 mt-1 ${n.read ? 'text-gray-400' : 'text-purple-600'} flex-shrink-0"></i>
+                    <div class="flex-grow">
+                        <p class="font-medium text-sm">${n.text}</p>
+                        <p class="text-xs mt-1 ${n.read ? 'text-gray-400' : 'text-purple-500'}">${n.time}</p>
+                    </div>
+                    <button class="text-gray-400 hover:text-gray-600 p-1 rounded-full flex-shrink-0">
+                        <i data-lucide="eye" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            const html = `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 dashboard-card p-6">
+                        <h2 class="text-xl font-semibold mb-4">Unread Notifications (${mockNotifications.filter(n => !n.read).length})</h2>
+                        <div class="space-y-3">
+                            ${notificationsHtml}
+                        </div>
+                    </div>
+                    <div class="dashboard-card p-6">
+                        <h2 class="text-xl font-semibold mb-4">Filters</h2>
+                        <div class="space-y-3 text-sm">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" checked class="text-purple-600 rounded"><span>Unread Only</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="text-purple-600 rounded"><span>Mentions (@)</span>
+                            </label>
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="text-purple-600 rounded"><span>System Alerts</span>
+                            </label>
+                        </div>
+                        <button class="mt-6 w-full bg-purple-100 text-purple-600 py-2 rounded-xl hover:bg-purple-200 transition-colors">
+                            Mark All as Read
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('main-content-area').innerHTML = html;
+            lucide.createIcons();
+        };
+
+        // --- CORE NAVIGATION LOGIC ---
+        const viewMap = {
+            'dashboard': renderDashboard,
+            'projects': renderProjects,
+            'tasks': renderTasks,
+            'search': renderSearch,
+            'kanban': renderKanban,
+            'calendar': renderCalendar,
+            'contacts': renderContacts,
+            'notifications': renderNotifications,
+            // 'add-project' will navigate to the projects view for simplicity
+            'add-project': renderProjects
+        };
+
+        const setActiveLink = (viewName) => {
+            document.querySelectorAll('#main-nav .nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-view') === viewName) {
+                    link.classList.add('active');
+                }
+            });
+        };
+
+        const navigateTo = (viewName) => {
+            currentView = viewName;
+            setActiveLink(viewName);
+            const renderFunc = viewMap[viewName];
+            if (renderFunc) {
+                renderFunc();
+                window.scrollTo(0, 0); // Scroll to top on view change
+            } else {
+                // Default fallback for incomplete views
+                renderHeader(viewName.charAt(0).toUpperCase() + viewName.slice(1), 'Coming Soon');
+                document.getElementById('main-content-area').innerHTML = `
+                    <div class="dashboard-card p-8 text-center">
+                        <i data-lucide="wrench-screwdriver" class="w-16 h-16 text-yellow-500 mx-auto mb-4"></i>
+                        <h2 class="text-2xl font-semibold mb-2">Under Construction</h2>
+                        <p class="text-gray-500">The '${viewName}' view is being developed. Check back soon!</p>
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+        };
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial render of the dashboard view
+            navigateTo('dashboard'); 
+
+            // Add event listener to the main navigation menu
+            document.getElementById('main-nav').addEventListener('click', (event) => {
+                const link = event.target.closest('.nav-link');
+                if (link) {
+                    event.preventDefault();
+                    const view = link.getAttribute('data-view');
+                    navigateTo(view);
+                }
+            });
+
+            // Add event listener for header buttons that trigger view changes (like "Add Project")
+            document.getElementById('main-header').addEventListener('click', (event) => {
+                const button = event.target.closest('button');
+                if (button && button.getAttribute('data-view')) {
+                    event.preventDefault();
+                    const view = button.getAttribute('data-view');
+                    navigateTo(view);
+                }
+            });
+
+            // Set initial active state for the dashboard link
+            setActiveLink('dashboard');
+        });
+
+    </script>
+</body>
+</html>

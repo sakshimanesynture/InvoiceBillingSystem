@@ -1,0 +1,138 @@
+<!-- HERO -->
+<section class="legal-hero">
+  <h1>Legal & Help Center</h1>
+  <p>Privacy Policy • Terms of Service • FAQ</p>
+</section>
+
+<div class="legal-container">
+
+  <!-- Privacy Policy -->
+  <section class="legal-card fade-up">
+    <h2>Privacy Policy</h2>
+    <p>
+      We value your privacy and are committed to protecting your business data.
+      Our invoice and GST billing software securely stores invoices, GST records,
+      customer details, and transaction history.
+    </p>
+    <p>
+      All data is encrypted and never shared with third parties without consent.
+    </p>
+  </section>
+
+  <!-- Terms of Service -->
+  <section class="legal-card fade-up">
+    <h2>Terms of Service</h2>
+    <p>
+      By using our billing platform, you agree to comply with applicable Indian
+      laws, GST regulations, and ethical business practices.
+    </p>
+    <p>
+      Users are responsible for maintaining account security. Any misuse may
+      result in account suspension.
+    </p>
+  </section>
+
+  <!-- Data Security -->
+  <section class="legal-card highlight fade-up">
+    <h2>Data Security & Compliance</h2>
+    <ul>
+      <li>🔐 Encrypted invoice & customer data</li>
+      <li>📜 GST compliant billing structure</li>
+      <li>☁ Secure cloud-based storage</li>
+      <li>🛡 Regular system security audits</li>
+    </ul>
+  </section>
+
+  <!-- FAQ -->
+  <section class="legal-card fade-up">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <h4>Is this software GST compliant?</h4>
+      <p>Yes, it follows all current Indian GST rules.</p>
+    </div>
+
+    <div class="faq-item">
+      <h4>Is my invoice data secure?</h4>
+      <p>Absolutely. All records are encrypted and securely stored.</p>
+    </div>
+
+    <div class="faq-item">
+      <h4>Can I use this for POS billing?</h4>
+      <p>Yes, POS billing and inventory management are supported.</p>
+    </div>
+
+    <div class="faq-item">
+      <h4>Do you provide customer support?</h4>
+      <p>Email and phone support are available during business hours.</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="legal-cta fade-up">
+  <h2>Need More Help?</h2>
+  <p>Our support team is always ready to assist you.</p>
+
+  <button (click)="toggleForm()">Contact Support</button>
+
+  <!-- Support Form -->
+  <form class="support-form"
+        *ngIf="showForm"
+        #supportForm="ngForm"
+        (ngSubmit)="submitForm(supportForm)">
+
+    <h3>Contact Support</h3>
+
+    <!-- Name -->
+    <input
+      type="text"
+      name="name"
+      [(ngModel)]="supportData.name"
+      placeholder="Your Name" />
+
+    <!-- Email -->
+    <input
+      type="email"
+      name="email"
+      [(ngModel)]="supportData.email"
+      placeholder="Email Address"
+      required
+      #email="ngModel" />
+
+    <small class="error"
+      *ngIf="email.invalid && email.touched">
+      Email is required
+    </small>
+
+    <!-- Description -->
+    <textarea
+      rows="4"
+      name="message"
+      [(ngModel)]="supportData.message"
+      placeholder="Describe your issue..."
+      required
+      #message="ngModel">
+    </textarea>
+
+    <small class="error"
+      *ngIf="message.invalid && message.touched">
+      Description is required
+    </small>
+
+    <button class="submit-btn" type="submit">
+      Submit Request
+    </button>
+
+  </form>
+
+  <!-- Success Message -->
+  <div class="success-msg" *ngIf="showSuccess">
+    ✅ Your request has been submitted successfully!
+  </div>
+</section>
+
+</div>
+
+<footer class="legal-footer">
+  <p>© 2025 Invoice Billing Software. All rights reserved.</p>
+</footer>

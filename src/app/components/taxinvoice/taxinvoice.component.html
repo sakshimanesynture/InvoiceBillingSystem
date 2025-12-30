@@ -1,0 +1,153 @@
+<div id="invoice-content" class="invoice-box">
+
+    <!-- TOP TITLE -->
+    <div class="title-box">TAX INVOICE</div>
+
+    <!-- HEADER SECTION -->
+    <div class="header-section">
+
+        <!-- LEFT COMPANY DETAILS -->
+        <div class="header-left">
+<p class="company-name">{{ invoiceData?.companyData?.name }}</p>
+
+            <p class="company-address">
+                Flat No 20, B1 Wing Swapnshilp Society,<br>
+                Survey No 32/4 Narhe Gaon, Pune - 411041
+            </p>
+
+            <div class="header-grid">
+                <p><b>Email:</b> shital.yadav@delxntech.com</p>
+                <p><b>Phone:</b> 8421539304</p>
+                <p><b>GST IN:</b> 27AALCD1266B1ZW</p>
+                <p><b>PAN No:</b> AALCD1266B</p>
+            </div>
+        </div>
+
+        <!-- RIGHT LOGO -->
+        <div class="header-logo">
+            <img [src]="invoiceData?.companyData?.logo" />
+        </div>
+    </div>
+
+    <div class="green-strip"></div>
+
+    <!-- BILL & INVOICE DETAILS -->
+    <div class="bill-section">
+
+        <!-- BILLING TO -->
+        <div class="bill-left">
+            <p class="section-title">Billing To</p>
+
+            <p class="customer-name">{{ invoiceData?.clientName }}</p>
+
+            <p class="customer-address">
+                Plot no 264/265, 3rd Floor, Vaswani Chambers,<br>
+                Dr Annie Besant Rd, Worli Colony, Worli,<br>
+                Mumbai - 400018
+            </p>
+
+            <div class="header-grid">
+                <p><b>Phone:</b> 9644170004</p>
+                <p><b>Email:</b> po@policysansar.com</p>
+            </div>
+        </div>
+
+        <!-- INVOICE DETAILS -->
+        <div class="bill-right">
+            <p class="section-title">Invoice Details</p>
+
+            <div class="header-grid">
+                <p><b>Date:</b> {{ invoiceData?.date }}</p>
+                <p><b>Bill No:</b> {{ invoiceData?.billNo }}</p>
+                <p><b>PAN No:</b> AAPCP0477J</p>
+                <p><b>GST No:</b> 27AAPCP0477J1ZW</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICE TABLE -->
+    <table class="main-table">
+        <thead>
+            <tr>
+                <th>Sr No.</th>
+                <th>Description</th>
+                <th>HSN Code</th>
+                <th>GST Rate</th>
+                <th>Amount (₹)</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let item of invoiceData?.items; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.hsn }}</td>
+                <td>{{ item.gst }}%</td>
+                <td class="text-right">{{ item.amount }}</td>
+            </tr>
+
+            <!-- BLANK ROWS EXACT LIKE SCREENSHOT -->
+            <tr *ngFor="let x of [].constructor(6)">
+                <td>&nbsp;</td><td></td><td></td><td></td><td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- TERMS + SUMMARY -->
+    <div class="bottom-section">
+
+        <!-- TERMS -->
+        <div class="terms-box">
+            <p class="section-title">Terms & Conditions</p>
+            <ul>
+                <li>Payment due within 30 days of invoice date</li>
+                <li>All disputes subject to Pune jurisdiction</li>
+            </ul>
+        </div>
+
+        <!-- SUMMARY BOX -->
+        <table class="summary-table">
+            <tr>
+                <td>Sub Total</td>
+                <td class="text-right">₹ {{ getTotalAmount() }}</td>
+            </tr>
+
+            <tr>
+                <td>CGST (9%)</td>
+                <td class="text-right">₹ {{ getTotalAmount() * 0.09 }}</td>
+            </tr>
+
+            <tr>
+                <td>SGST (9%)</td>
+                <td class="text-right">₹ {{ getTotalAmount() * 0.09 }}</td>
+            </tr>
+
+            <tr class="summary-total-row">
+                <td><b>TOTAL</b></td>
+                <td class="text-right total-amount">
+                    ₹ {{ getTotalAmount() + (getTotalAmount()*0.18) }}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- AMOUNT IN WORDS + SIGNATURE -->
+    <div class="sign-section">
+        <div class="words-box">
+            <p class="section-title">Total Amount in Words</p>
+            <p class="words-text">{{ invoiceData?.amountWords }}</p>
+        </div>
+
+        <div class="sign-box">
+            <div class="sign-line"></div>
+            <p>Seal & Signature</p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+   <div class="footer" *ngIf="invoiceData?.companyData?.footerText">
+    {{ invoiceData.companyData.footerText }}
+</div>
+
+
+</div>

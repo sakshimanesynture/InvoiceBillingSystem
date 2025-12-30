@@ -1,0 +1,209 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <div class="header">
+   <button 
+  class="back" 
+  (click)="onCancel()"
+  style="
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  "
+>
+  <span
+    style="
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: transparent;
+      border: 2px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    "
+  >
+    <!-- SVG Back Arrow -->
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      width="20" 
+      height="20" 
+      fill="none" 
+      viewBox="0 0 24 24" 
+      stroke="currentColor" 
+      stroke-width="2"
+      style="color: white;"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  </span>
+</button>
+
+
+    <h2 style="text-align:center; width:100%;">
+      {{ mode === 'add' ? 'Add New List' : 'Edit Client' }}
+    </h2>
+  </div>
+
+
+  <!-- MAIN TWO PANEL LAYOUT -->
+  <div style="display: flex; gap: 30px; margin-top: 20px;">
+
+    <!-- LEFT SIDE PANEL -->
+    <div style="
+        width: 35%; 
+        /* background: #f8f9fa; */
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.08);
+      ">
+      
+      <h3 style="margin-bottom: 15px;">Select Company</h3>
+
+      <div class="company-select-box">
+        <label>Choose Company</label>
+
+        <div class="custom-dropdown">
+          <select [(ngModel)]="selectedCompany" (change)="onCompanyChange()">
+            <option value="">-- Select Company --</option>
+            <option value="synture">Synture Sol Pvt Ltd</option>
+            <option value="delxn">DelXN Technologies Pvt.Ltd</option>
+            <option value="farmfarry">Farmfarry</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <!-- RIGHT SIDE PANEL (LOGO + FORM) -->
+    <div style="width: 65%;">
+
+      <!-- LOGO CENTER -->
+      <div class="company-logo" *ngIf="companyLogo" style="text-align: center; margin-bottom: 20px;">
+        <img [src]="companyLogo" style="width: 180px; height: auto;" />
+      </div>
+
+      <!-- FORM -->
+      <div *ngIf="selectedCompany">
+
+        <div *ngIf="!loading && !error" class="card">
+          <form [formGroup]="form" (ngSubmit)="onSave()">
+
+            <!-- NAME -->
+            <div class="row">
+              <label>Name <span class="req">*</span></label>
+              <input formControlName="name"
+                [class.invalid]="f['name'].invalid && (f['name'].dirty || f['name'].touched)" />
+
+              <div class="error-msg"
+                *ngIf="f['name'].errors && (f['name'].dirty || f['name'].touched)">
+                <div *ngIf="f['name'].errors['required']">Name is required</div>
+                <div *ngIf="f['name'].errors['minlength']">Name must be at least 2 characters</div>
+                <div *ngIf="f['name'].errors['maxlength']">Name must be at most 200 characters</div>
+              </div>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="row">
+              <label>Email <span class="req">*</span></label>
+              <input formControlName="email"
+                [class.invalid]="f['email'].invalid && (f['email'].dirty || f['email'].touched)" />
+
+              <div class="error-msg"
+                *ngIf="f['email'].errors && (f['email'].dirty || f['email'].touched)">
+                <div *ngIf="f['email'].errors['required']">Email is required</div>
+                <div *ngIf="f['email'].errors['email']">Please enter a valid email</div>
+              </div>
+            </div>
+
+            <!-- PHONE -->
+            <div class="row">
+              <label>Phone</label>
+              <input formControlName="phone" />
+            </div>
+
+            <!-- ADDRESS -->
+            <div class="row">
+              <label>Address</label>
+              <textarea formControlName="address" rows="3"></textarea>
+            </div>
+
+            <!-- CITY / STATE -->
+            <div class="two-cols">
+              <div class="col">
+                <label>City</label>
+                <input formControlName="city" />
+              </div>
+              <div class="col">
+                <label>State</label>
+                <input formControlName="state" />
+              </div>
+            </div>
+
+            <!-- PIN / GST -->
+            <div class="two-cols">
+              <div class="col">
+                <label>Pin Code</label>
+                <input formControlName="pinCode" />
+              </div>
+
+              <div class="col">
+                <label>GST Number</label>
+                <input formControlName="gstNumber"
+                  [class.invalid]="!isGstValid() && (f['gstNumber'].touched || f['gstNumber'].dirty)" />
+
+                <div class="error-msg"
+                  *ngIf="!isGstValid() && (f['gstNumber'].touched || f['gstNumber'].dirty)">
+                  Invalid GST format (e.g., 27AABCU9603R1ZM)
+                </div>
+              </div>
+            </div>
+
+            <!-- STATUS -->
+            <div class="row radio-row">
+              <label>Status <span class="req">*</span></label>
+              <label><input type="radio" formControlName="isActive" [value]="true" /> Active</label>
+              <label><input type="radio" formControlName="isActive" [value]="false" /> Inactive</label>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="actions">
+              <button type="button" class="btn cancel" (click)="onCancel()">Cancel</button>
+
+              <button type="submit"
+                class="btn save"
+                [disabled]="form.invalid || !isGstValid() || saving">
+                <span *ngIf="!saving">{{ mode === 'add' ? 'Create Client' : 'Update Client' }}</span>
+                <span *ngIf="saving">Saving...</span>
+              </button>
+            </div>
+
+            <div *ngIf="error" class="submit-error">{{ error }}</div>
+          </form>
+        </div>
+         <!-- ⭐ VIEW CLIENT DETAILS -->
+  <div *ngIf="viewClient" class="view-details" style="margin-top:20px; padding:20px; border:1px solid #ccc; border-radius:10px;">
+    <h3>Client Details</h3>
+    <p><strong>Company:</strong> {{ viewClient.company }}</p>
+    <p><strong>Name:</strong> {{ viewClient.name }}</p>
+    <p><strong>Email:</strong> {{ viewClient.email }}</p>
+    <p><strong>Phone:</strong> {{ viewClient.phone }}</p>
+    <p><strong>Address:</strong> {{ viewClient.address }}</p>
+    <p><strong>City:</strong> {{ viewClient.city }}</p>
+    <p><strong>State:</strong> {{ viewClient.state }}</p>
+    <p><strong>Pin Code:</strong> {{ viewClient.pinCode }}</p>
+    <p><strong>GST Number:</strong> {{ viewClient.gstNumber }}</p>
+    <p><strong>Status:</strong> {{ viewClient.isActive ? 'Active' : 'Inactive' }}</p>
+  </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

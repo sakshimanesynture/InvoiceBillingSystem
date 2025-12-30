@@ -1,0 +1,78 @@
+<div class="invoice-page">
+  <div class="page-header">
+    <h2>🧾 Invoices</h2>
+<button (click)="goToNewInvoice()">➕ Create New Invoice</button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <input type="text" placeholder="Search by invoice#, client name...">
+
+    <div class="status-filters">
+  <button (click)="filterByStatus('All')" [class.active]="selectedStatus === 'All'">All</button>
+  <button (click)="filterByStatus('Paid')" [class.active]="selectedStatus === 'Paid'">Paid</button>
+  <button (click)="filterByStatus('Sent')" [class.active]="selectedStatus === 'Sent'">Sent</button>
+  <button (click)="filterByStatus('Overdue')" [class.active]="selectedStatus === 'Overdue'">Overdue</button>
+  <button (click)="filterByStatus('Draft')" [class.active]="selectedStatus === 'Draft'">Draft</button>
+  <button (click)="filterByStatus('Partially Paid')" [class.active]="selectedStatus === 'Partially Paid'">Partially Paid</button>
+</div>
+
+
+  <!-- Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Invoice #</th>
+        <th>Client Name</th>
+        <th>Invoice Date</th>
+        <th>Due Date</th>
+        <th>Total Amount (₹)</th>
+        <th>Paid Amount (₹)</th>
+        <th>Balance (₹)</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <!-- ⭐ ROW 1 -->
+      <tr>
+        <td>INV-001</td>
+        <td>Sakshi </td>
+        <td>15 Aug 2024</td>
+        <td>30 Aug 2024</td>
+        <td>₹12,000</td>
+        <td>₹12,000</td>
+        <td>₹20,000</td>
+        <td><span class="badge paid">Paid</span></td>
+        <td class="actions">
+          <button>👁️</button>
+          <button>📄</button>
+          <button>📧</button>
+          <button>🗑️</button>
+        </td>
+      </tr>
+
+      <!-- ⭐ ROW 2 -->
+      <tr>
+        <td>INV-002</td>
+        <td>Komal </td>
+        <td>10 Sep 2024</td>
+        <td>20 Sep 2024</td>
+        <td>₹8,500</td>
+        <td>₹4,000</td>
+        <td>₹4,500</td>
+        <td><span class="badge partially-paid">Partially Paid</span></td>
+        <td class="actions">
+          <button>👁️</button>
+          <button>📄</button>
+          <button>📧</button>
+          <button>🗑️</button>
+        </td>
+      </tr>
+
+     
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,111 @@
+/* 🔥 Full Page Background */
+.invoice-form-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+
+  background-image: url('../../../assets/images/dashboard-bg.png'); /* <-- इथे image path दे */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 🔥 Small Clean Form */
+.invoice-form-container {
+  width: 420px;                  /* 👉 form small */
+  background: rgba(255,255,255,0.9);
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.4s ease;
+}
+
+/* Title */
+.invoice-form h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #5a189a;
+}
+
+/* Form Controls */
+.invoice-form label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.invoice-form input,
+.invoice-form select,
+.invoice-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 3px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: 0.25s ease;
+}
+
+.invoice-form textarea {
+  height: 70px;
+  resize: none;
+}
+
+/* Focus effect */
+.invoice-form input:focus,
+.invoice-form select:focus,
+.invoice-form textarea:focus {
+  border-color: #7b2cbf;
+  box-shadow: 0 0 8px rgba(123,44,191,0.4);
+  outline: none;
+}
+
+/* Items */
+.item-row {
+  display: grid;
+  grid-template-columns: 1fr 70px 70px 90px auto;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+/* Buttons */
+button {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #5a189a;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #3c096c;
+}
+.logo-container {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.logo-container img {
+  width: 120px;     /* ❗ Logo size same ठेवण्यासाठी fixed width */
+  height: 120px;    /* ❗ Height fix केली की सर्व logos perfect square दिसतात */
+  object-fit: contain; /* Image distort न होता fit होतो */
+  display: block;
+  margin: 0 auto;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}

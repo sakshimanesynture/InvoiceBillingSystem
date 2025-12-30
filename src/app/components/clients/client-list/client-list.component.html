@@ -1,0 +1,71 @@
+<div class="page-container">
+
+  <!-- Header -->
+  <div class="header">
+    <h2>👥 List</h2>
+    <button class="add-btn" (click)="addClient()">➕ Add New List</button>
+  </div>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <input type="text"
+           placeholder="Search by name..."
+           [(ngModel)]="searchTerm"
+           (input)="onSearchChange()">
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">Loading clients...</div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="error">
+    {{ error }}
+    <button (click)="retry()">Retry</button>
+  </div>
+
+  <!-- Table -->
+  <table *ngIf="!loading && !error && filteredClients.length > 0" class="client-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>City</th>
+        <th>State</th>
+        <th>GST Number</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let client of filteredClients; index as i" class="client-row">
+        <td>{{ i + 1 }}</td>
+        <td>{{ client.name }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.phone || '-' }}</td>
+        <td>{{ client.city || '-' }}</td>
+        <td>{{ client.state || '-' }}</td>
+        <td>{{ client.gstNumber || '-' }}</td>
+        <td>
+          <span [ngClass]="client.isActive ? 'badge-active' : 'badge-inactive'">
+            {{ client.isActive ? 'Active' : 'Inactive' }}
+          </span>
+        </td>
+        <td class="actions">
+          <button class="edit-btn" (click)="editClient(client.id)">✏️</button>
+          <button class="delete-btn" (click)="deleteClient(client)">🗑️</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Empty States -->
+  <div *ngIf="!loading && !error && clients.length === 0" class="empty">
+    No clients yet. Add your first client!
+  </div>
+
+  <div *ngIf="!loading && !error && clients.length > 0 && filteredClients.length === 0" class="empty">
+    No clients found matching "{{ searchTerm }}"
+  </div>
+ </div>

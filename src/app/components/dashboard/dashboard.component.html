@@ -1,0 +1,271 @@
+<!-- dashboard.component.html -->
+<div class="landing-page-container" @fadeIn>
+
+  <!-- NAVBAR (fixed via CSS) -->
+ <nav class="landing-navbar">
+  <div class="container navbar-content">
+    
+    <!-- LEFT SIDE (LOGO + NAME + TAGLINE) -->
+    <div class="brand-left">
+
+      <img src="../../../assets/images/synture.png" alt="logo" class="brand-logo-img" />
+
+      <div class="brand-text-group">
+        <div class="brand-logo-text">Synture</div>
+        <div class="brand-tagline">Invoices · Billing · Clients</div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE (NAV LINKS + BUTTON) -->
+    <div class="nav-right-side">
+      <ul class="nav-links">
+        <li><a (click)="scrollToSection('home')">Home</a></li>
+        <li><a (click)="scrollToSection('core-actions')">About Us</a></li>
+        <li><a (click)="scrollToSection('features')">Services</a></li>
+        <li><a (click)="scrollToSection('contact')">Contact</a></li>
+        <li class="dropdown">
+    <a>Features <i class="fas fa-chevron-down arrow"></i></a>
+
+    <ul class="dropdown-menu">
+       <li><a routerLink="/gst-billing">GST Billing & Invoicing</a></li>
+    <li><a routerLink="/inventory">Inventory Management</a></li>
+    <li><a routerLink="/bookkeeping">Bookkeeping</a></li>
+    <li><a routerLink="/pos-billing">POS Billing</a></li>
+    <li><a routerLink="/eway-billing">eWay Billing</a></li>
+    <li><a routerLink="/einvoicing">eInvoicing</a></li>
+    </ul>
+  </li>
+      </ul>
+
+      <button class="nav-dashboard-btn" (click)="goToDashboard()">
+        Go To Dashboard 
+      </button>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- HERO / HOME -->
+  <section id="home" class="hero-section">
+    <!-- BACKGROUND VIDEO -->
+<video autoplay muted loop playsinline class="bg-video">
+  <source src="assets/videos/invoice.mp4" type="video/mp4">
+</video>
+
+
+    <div class="container hero-content-main">
+      <h1 class="landing-title">Seamlessly Manage Invoices and Accounts without the headache.</h1>
+      <p class="hero-subtitle">
+        The simplest, fastest, most reliable solution for managing invoices, clients and business growth.
+      </p>
+      
+      
+    </div>
+  </section>
+
+  <!-- ABOUT US (used core-actions slot for About content) -->
+  <section id="core-actions" class="core-actions-section">
+    <div class="container">
+      <h2 class="section-heading">About Synture</h2>
+      <p class="lead">
+        Synture is a lightweight, powerful invoicing and billing platform built for small businesses and freelancers.
+        We focus on speed, reliability and ease-of-use — so you can spend more time running your business.
+      </p>
+
+      <div class="cards-container">
+        <div class="dashboard-card invoices-card" @slideIn (click)="navigateTo('invoices')">
+          <div class="card-icon"><i class="fas fa-file-invoice"></i></div>
+          <h3>Invoices</h3>
+          <p>Create, send and track invoices effortlessly.</p>
+        </div>
+
+        <div class="dashboard-card clients-card" @slideIn (click)="navigateTo('clients')">
+          <div class="card-icon"><i class="fas fa-users"></i></div>
+          <h3>Clients</h3>
+          <p>Store contacts, billing history and custom notes.</p>
+
+          
+        </div>
+      </div>
+    </div>
+    <div class="section-separator"></div>
+  </section>
+
+  <!-- SERVICES / FEATURES -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <h2 class="section-heading">Services & Features</h2>
+
+      <div class="features-grid">
+        <div class="feature-item">
+          <i class="fas fa-chart-line feature-icon"></i>
+          <h4>Real-time Analytics</h4>
+          <p>Track your revenue, outstanding invoices and payments in real time.</p>
+        </div>
+
+        <div class="feature-item">
+          <i class="fas fa-cloud feature-icon"></i>
+          <h4>Cloud Backup</h4>
+          <p>Automatic backups ensure your data is protected and always available.</p>
+        </div>
+
+        <div class="feature-item">
+          <i class="fas fa-lock feature-icon"></i>
+          <h4>Secure Access</h4>
+          <p>Role-based permissions so you control who sees what.</p>
+        </div>
+      </div>
+    </div>
+    <div class="section-separator"></div>
+  </section>
+
+  <!-- CONTACT / TESTIMONIALS -->
+ <section class="contact-section" id="contact">
+  <h2 class="contact-heading">Contact Us</h2>
+
+  <div class="contact-container">
+
+    <!-- LEFT SIDE INFO BOXES -->
+    <div class="contact-info">
+
+      <div class="info-card">
+        <div class="info-icon email-icon">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <div>
+          <h3>Email</h3>
+          <p>info@synturesolutions.com</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon phone-icon">
+          <i class="fas fa-phone-alt"></i>
+        </div>
+        <div>
+          <h3>Phone</h3>
+          <p>+91 8421539304</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon address-icon">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div>
+          <h3>Address</h3>
+          <p>
+            Sr. No 36/1/3, 3rd Floor Audumbar Nivya <br />
+            Near Canara Bank, Narhe Gaon, Pune - 411041
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE FORM -->
+    <div class="contact-form">
+
+      <div class="form-row">
+        <div>
+          <label>Name</label>
+          <input
+            type="text"
+            placeholder="Your name"
+            [(ngModel)]="name"
+          />
+        </div>
+
+        <div>
+          <label>Email</label>
+          <input
+            type="email"
+            placeholder="your@email.com"
+            [(ngModel)]="email"
+            (blur)="validateEmail()"
+          />
+
+          <small class="error-text" *ngIf="emailError">
+            Please enter a valid email address (example: abc@gmail.com)
+          </small>
+        </div>
+      </div>
+
+      <div class="form-row full">
+        <div>
+          <label>Message</label>
+          <textarea
+            rows="6"
+            placeholder="Tell us about your project..."
+            [(ngModel)]="message"
+          ></textarea>
+        </div>
+      </div>
+
+      <button class="send-btn" (click)="sendMessage()">
+        <i class="fas fa-paper-plane"></i> Send Message
+      </button>
+
+    </div>
+
+  </div> <!-- ✅ contact-container CLOSED HERE -->
+
+</section>
+
+<!-- ✅ Success Popup (section च्या बाहेर) -->
+<div class="popup-overlay" *ngIf="showPopup">
+  <div class="popup">
+    <i class="fas fa-check-circle success-icon"></i>
+    <h3>Message Delivered Successfully!</h3>
+    <p>Thank you for contacting us. We’ll get back to you soon.</p>
+    <button (click)="closePopup()">OK</button>
+  </div>
+</div>
+
+<footer class="invoice-footer">
+    <div class="footer-content"> <div class="company-info">
+            <h3>Synture Solutions</h3>
+            <p>Authorized Signatory</p>
+            <p>Sr. No 36/1/3, 3rd Floor Audumbar Nivya, Near Canara Bank, Narhe Gaon, Pune - 411041</p>
+            <p>info@synturesolutions.com | Phone: +91 8421539304</p>
+        </div>
+        
+       <div class="links">
+  <h4>Resources</h4>
+  <ul>
+    <li>
+      <a routerLink="/legal">Terms of Service</a>
+    </li>
+    <li>
+      <a routerLink="/legal">Privacy Policy</a>
+    </li>
+    <li>
+      <a routerLink="/legal">FAQ</a>
+    </li>
+  </ul>
+</div>
+
+
+        <div class="social">
+            <h4>Follow Us</h4>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/Synture/" target="_blank" aria-label="Follow us on Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://x.com/synture" target="_blank" aria-label="Follow us on Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.instagram.com/accounts/emailsignup/" target="_blank" aria-label="Follow us on Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.linkedin.com/authwall?trk=bf&trkInfo=AQHVQSh46h2A9wAAAZroPVVIPMXfU9SAVZRZX1lcTQGLclQdYUSopwYeHlXl0s2veD6mLoQeQ4aDQhwiqHd6ER-VzMp3ZWPKkRaoBr2yWSAyIrCItfryjVNABLJfxc2JeS0UskY=&original_referer=&sessionRedirect=https%3A%2F%2Fwww.linkedin.com%2Fcompany%2Fsynture" target="_blank" aria-label="Follow us on LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+        </div>
+        
+    </div> <div class="footer-bottom"> <p>© 2025 Synture Technologies. All rights reserved.</p>
+    </div>
+</footer> 
+

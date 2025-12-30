@@ -1,0 +1,219 @@
+<div class="app-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-text">Synture Solutions Pvt Ltd</span>
+    </div>
+
+    <nav class="menu">
+      <a class="menu-item"
+         [class.active]="activeSection==='dashboard'"
+         (click)="show('dashboard')">Dashboard</a>
+
+      <a class="menu-item"
+         [class.active]="activeSection==='gst'"
+         (click)="show('gst')">GST Billing</a>
+
+      <a class="menu-item"
+         [class.active]="activeSection==='inventory'"
+         (click)="show('inventory')">Inventory</a>
+
+      <a class="menu-item"
+         [class.active]="activeSection==='bookkeeping'"
+         (click)="show('bookkeeping')">Bookkeeping</a>
+
+      <a class="menu-item"
+         [class.active]="activeSection==='pos'"
+         (click)="show('pos')">POS Billing</a>
+
+      <a class="menu-item"
+         [class.active]="activeSection==='eway'"
+         (click)="show('eway')">E-Way Bill</a>
+
+      <a class="menu-item"
+         [class.active]="activeSection==='einvoice'"
+         (click)="show('einvoice')">E-Invoicing</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <h1 class="page-title">Invoicing Dashboard</h1>
+      <div class="top-actions">
+<button class="add-btn" (click)="goToInvoiceForm()">
+  + New Invoice
+</button>
+      </div>
+    </header>
+
+    <!-- ================= DASHBOARD ================= -->
+    <section *ngIf="activeSection==='dashboard'">
+
+      <section class="stats-row">
+        <div class="stat">
+          <div class="stat-value">₹2.5L</div>
+          <div class="stat-label">Total Sales</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">128</div>
+          <div class="stat-label">Invoices</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">₹42K</div>
+          <div class="stat-label">GST Collected</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">12</div>
+          <div class="stat-label">Low Stock</div>
+        </div>
+      </section>
+
+      <section class="project-overview">
+        <h2 class="section-title">Invoicing Modules</h2>
+
+        <div class="overview-grid">
+          <article class="proj-card light-purple" (click)="show('gst')">
+            <span class="tag purple">GST</span>
+            <h3>GST Billing</h3>
+            <p class="muted">CGST / SGST / IGST</p>
+            <div class="progress-track">
+              <div class="progress purple-bar" style="width:80%"></div>
+            </div>
+          </article>
+
+          <article class="proj-card light-green" (click)="show('inventory')">
+            <span class="tag green">Stock</span>
+            <h3>Inventory</h3>
+            <p class="muted">Product tracking</p>
+            <div class="progress-track">
+              <div class="progress green-bar" style="width:65%"></div>
+            </div>
+          </article>
+
+          <article class="proj-card light-yellow" (click)="show('pos')">
+            <span class="tag orange">POS</span>
+            <h3>POS Billing</h3>
+            <p class="muted">Retail billing</p>
+            <div class="progress-track">
+              <div class="progress orange-bar" style="width:55%"></div>
+            </div>
+          </article>
+
+          <article class="proj-card light-blue" (click)="show('einvoice')">
+            <span class="tag blue">Govt</span>
+            <h3>E-Invoicing</h3>
+            <p class="muted">IRP invoices</p>
+            <div class="progress-track">
+              <div class="progress blue-bar" style="width:40%"></div>
+            </div>
+          </article>
+        </div>
+      </section>
+<!-- ================= Module Graphs Section ================= -->
+<section class="module-graphs">
+  <div class="graphs-grid">
+
+    <!-- Pie Chart for Visits -->
+    <div class="graph-card">
+      <h3>Current Visits</h3>
+      <svg viewBox="0 0 32 32" class="pie-chart">
+        <circle r="16" cx="16" cy="16" class="pie-bg"></circle>
+        <circle r="16" cx="16" cy="16" class="pie-segment segment-1" stroke-dasharray="43.8 56.2"></circle>
+        <circle r="16" cx="16" cy="16" class="pie-segment segment-2" stroke-dasharray="31.3 68.7"></circle>
+        <circle r="16" cx="16" cy="16" class="pie-segment segment-3" stroke-dasharray="18.8 81.2"></circle>
+        <circle r="16" cx="16" cy="16" class="pie-segment segment-4" stroke-dasharray="6.3 93.7"></circle>
+      </svg>
+      <div class="legend">
+        <span class="dot blue"></span> PosBilling
+        <span class="dot yellow"></span> GstBilling
+        <span class="dot purple"></span> Einvoice
+        <span class="dot red"></span> Inventory
+      </div>
+    </div>
+
+    <!-- Bar Chart for Website Visits -->
+    <div class="graph-card">
+      <h3>Website Visits</h3>
+      <div class="bar-chart">
+        <div class="bar team-a" style="height:40%"></div>
+        <div class="bar team-b" style="height:50%"></div>
+        <div class="bar team-a" style="height:30%"></div>
+        <div class="bar team-b" style="height:60%"></div>
+        <div class="bar team-a" style="height:80%"></div>
+        <div class="bar team-b" style="height:35%"></div>
+        <div class="bar team-a" style="height:25%"></div>
+        <div class="bar team-b" style="height:85%"></div>
+        <div class="bar team-a" style="height:70%"></div>
+      </div>
+      <div class="bar-labels">
+        <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+        <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+    </section>
+
+    <!-- ================= GST ================= -->
+    <section *ngIf="activeSection==='gst'">
+      <h2>GST Billing Dashboard</h2>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-value">₹42K</div><div class="stat-label">GST Collected</div></div>
+        <div class="stat"><div class="stat-value">18%</div><div class="stat-label">GST Slab</div></div>
+        <div class="stat"><div class="stat-value">12</div><div class="stat-label">Returns Pending</div></div>
+      </div>
+    </section>
+
+    <!-- ================= INVENTORY ================= -->
+    <section *ngIf="activeSection==='inventory'">
+      <h2>Inventory Dashboard</h2>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-value">320</div><div class="stat-label">Products</div></div>
+        <div class="stat"><div class="stat-value">12</div><div class="stat-label">Low Stock</div></div>
+        <div class="stat"><div class="stat-value">₹1.2L</div><div class="stat-label">Stock Value</div></div>
+      </div>
+    </section>
+
+     <section *ngIf="activeSection==='bookkeeping'">
+      <h2>Bookkeeping Dashboard</h2>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-value">500</div><div class="stat-label">Products</div></div>
+        <div class="stat"><div class="stat-value">15</div><div class="stat-label">Low Stock</div></div>
+        <div class="stat"><div class="stat-value">₹1.2L</div><div class="stat-label">Stock Value</div></div>
+      </div>
+    </section>
+    <!-- ================= POS ================= -->
+    <section *ngIf="activeSection==='pos'">
+      <h2>POS Billing Dashboard</h2>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-value">₹18K</div><div class="stat-label">Today Sales</div></div>
+        <div class="stat"><div class="stat-value">46</div><div class="stat-label">Bills</div></div>
+      </div>
+    </section>
+
+    <!-- ================= E-WAY ================= -->
+    <section *ngIf="activeSection==='eway'">
+      <h2>E-Way Bill Dashboard</h2>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-value">22</div><div class="stat-label">Generated</div></div>
+        <div class="stat"><div class="stat-value">5</div><div class="stat-label">Expiring Today</div></div>
+      </div>
+    </section>
+
+    <!-- ================= E-INVOICE ================= -->
+    <section *ngIf="activeSection==='einvoice'">
+      <h2>E-Invoicing Dashboard</h2>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-value">98%</div><div class="stat-label">IRP Success</div></div>
+        <div class="stat"><div class="stat-value">124</div><div class="stat-label">Invoices</div></div>
+      </div>
+    </section>
+
+  </main>
+</div>

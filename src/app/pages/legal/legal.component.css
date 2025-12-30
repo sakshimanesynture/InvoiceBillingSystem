@@ -1,0 +1,221 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f4f8fc;
+}
+
+/* HERO */
+.legal-hero {
+  background: linear-gradient(135deg, #1e3c72, #4CAF50);
+  color: #fff;
+  text-align: center;
+  padding: 90px 20px;
+  animation: fadeDown 1s ease;
+}
+
+.legal-hero h1 {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.legal-hero p {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+/* CONTAINER */
+.legal-container {
+  max-width: 1100px;
+  margin: 70px auto;
+  padding: 0 20px;
+  display: grid;
+  gap: 40px;
+}
+
+/* CARD */
+.legal-card {
+  background: #fff;
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  border-left: 6px solid #4CAF50;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.legal-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+}
+
+.legal-card h2 {
+  color: #1e3c72;
+  margin-bottom: 15px;
+  font-size: 26px;
+}
+
+.legal-card p {
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.legal-card ul {
+  padding-left: 20px;
+}
+
+.legal-card ul li {
+  margin-bottom: 10px;
+  color: #444;
+}
+
+/* FAQ */
+.faq-item {
+  margin-top: 22px;
+  padding-left: 15px;
+  border-left: 3px solid #4CAF50;
+}
+
+.faq-item h4 {
+  color: #1e3c72;
+  margin-bottom: 6px;
+}
+
+/* CTA */
+.legal-cta {
+  background: linear-gradient(135deg, #1e3c72, #16325c);
+  color: #fff;
+  text-align: center;
+  padding: 50px 30px;
+  border-radius: 16px;
+}
+
+.legal-cta button {
+  margin-top: 20px;
+  padding: 14px 30px;
+  background: #4CAF50;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.legal-cta button:hover {
+  background: #43a047;
+  transform: scale(1.05);
+}
+
+/* FOOTER */
+.legal-footer {
+  background: #1e3c72;
+  color: #ccc;
+  text-align: center;
+  padding: 25px;
+  margin-top: 70px;
+}
+
+/* ANIMATIONS */
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 1s ease forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* SUPPORT FORM */
+.support-form {
+  max-width: 450px;
+  margin: 25px auto 0;
+  background: #fff;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+  animation: slideDown 0.4s ease;
+}
+
+.support-form h3 {
+  color: #1e3c72;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.support-form input,
+.support-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.support-form input:focus,
+.support-form textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: #4CAF50;
+  border: none;
+  color: #fff;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #43a047;
+}
+
+/* SUCCESS MESSAGE */
+.success-msg {
+  margin-top: 20px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  animation: fadeIn 0.4s ease;
+}
+
+/* ANIMATIONS */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.error {
+  color: #d32f2f;
+  font-size: 13px;
+  margin-bottom: 8px;
+  display: block;
+}

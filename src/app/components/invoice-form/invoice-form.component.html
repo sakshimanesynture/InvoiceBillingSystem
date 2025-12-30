@@ -1,0 +1,111 @@
+<form [formGroup]="form" class="invoice-form-wrapper">
+
+  <div class="invoice-form-container">
+
+    <div class="invoice-form" id="invoice-pdf">
+      <h2>Create Invoice</h2>
+
+      <!-- Company Select -->
+      <label>Choose Company</label>
+      <select formControlName="company" (change)="onCompanyChange()">
+        <option value="">--Select--</option>
+        <option *ngFor="let c of companies" [value]="c.name">{{ c.name }}</option>
+      </select>
+
+      <!-- Logo -->
+      <div *ngIf="selectedCompany" class="logo-container">
+        <img [src]="selectedCompany.logo" alt="{{selectedCompany.name}}">
+      </div>
+
+      <!-- Client Details -->
+      <div class="client-section">
+
+        <label>Client Name</label>
+        <input formControlName="clientName">
+
+        <label>Email</label>
+        <input formControlName="email">
+
+        <label>Phone</label>
+        <input formControlName="phone">
+
+        <label>Address</label>
+        <textarea formControlName="address"></textarea>
+
+        <div class="row">
+          <div>
+            <label>City</label>
+            <input formControlName="city">
+          </div>
+
+          <div>
+            <label>State</label>
+            <input formControlName="state">
+          </div>
+
+          <div>
+            <label>Pincode</label>
+            <input formControlName="pinCode">
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>GST Number</label>
+            <input formControlName="gstNumber">
+          </div>
+
+          <div>
+            <label>PAN Number</label>
+            <input formControlName="panNumber">
+          </div>
+        </div>
+
+        <label>Billing To</label>
+        <input formControlName="billingTo">
+
+        <div class="row">
+          <div>
+            <label>Invoice Date</label>
+            <input type="date" formControlName="invoiceDate">
+          </div>
+
+          <div>
+            <label>Due Date</label>
+            <input type="date" formControlName="dueDate">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Invoice Items -->
+      <div formArrayName="items">
+        <h3>Invoice Items</h3>
+
+        <div *ngFor="let item of items.controls; let i=index"
+             [formGroupName]="i"
+             class="item-row">
+
+          <input placeholder="Description" formControlName="description">
+          <input placeholder="HSN" formControlName="hsnCode">
+          <input placeholder="GST %" formControlName="gstRate" type="number">
+          <input placeholder="Amount" formControlName="amount" type="number">
+
+          <button type="button" class="remove-btn" (click)="removeItem(i)">❌</button>
+        </div>
+
+        <button type="button" class="add-btn" (click)="addItem()">➕ Add Item</button>
+      </div>
+
+      <h3>Total: ₹ {{ calculateTotal() }}</h3>
+
+      <!-- Generate PDF -->
+<button type="button" (click)="goToTaxInvoice()">📄 Preview Invoice</button>
+
+      
+
+    </div>
+
+  </div>
+
+</form>

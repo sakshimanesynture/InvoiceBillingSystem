@@ -1,0 +1,185 @@
+/* PAGE LAYOUT */.invoice-page {
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+
+  /* 🔥 Add Background Image */
+  background: 
+      linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),  /* light dark overlay */
+      url('../../../assets/images/dashboard-bg.png') center/cover no-repeat fixed;
+
+  min-height: 100vh;
+}
+.page-header h2 {
+  color: white !important;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+
+  background: transparent !important; /* ❗ White background remove */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: none !important;
+}
+table,
+table th,
+table td {
+  color: #fff !important;
+}
+
+
+.invoice-page {
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+}
+
+/* HEADER */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.page-header h2 {
+  font-size: 26px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* CREATE NEW INVOICE BUTTON */
+.page-header button {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.page-header button:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+}
+
+/* FILTERS */
+.filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filters input {
+  width: 40%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* STATUS FILTER TABS */
+.status-filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.status-filters button {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  background: #eee;
+  transition: 0.2s;
+}
+
+.status-filters button.active {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* TABLE HEADER */
+thead tr {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  text-align: left;
+}
+
+thead th {
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ROWS */
+tbody tr {
+  border-bottom: 1px solid #eee;
+  transition: 0.2s;
+}
+
+tbody tr:hover {
+  background: transparent !important;
+}
+
+
+/* CELLS */
+tbody td {
+  padding: 12px 14px;
+  font-size: 14px;
+}
+
+/* OVERDUE ROW HIGHLIGHT */
+tbody tr.overdue {
+  background: #ffe5e5;
+}
+
+/* BADGES */
+.badge {
+  padding: 5px 10px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Status colors */
+.badge.paid { background: #c8f7c5; color: #1e7e34; }
+.badge.sent { background: #d9ecff; color: #006edc; }
+.badge.overdue { background: #f8d7da; color: #c70000; }
+.badge.draft { background: #e0e0e0; color: #555; }
+.badge.partially-paid { background: #fff3cd; color: #b8860b; }
+
+/* ACTION BUTTONS */
+.actions button {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: 0.2s;
+}
+
+.actions button:hover {
+  transform: scale(1.2);
+}
