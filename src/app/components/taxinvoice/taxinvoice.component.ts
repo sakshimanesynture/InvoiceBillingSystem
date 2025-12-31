@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import * as html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-taxinvoice',
@@ -41,13 +41,13 @@ export class TaxinvoiceComponent implements OnInit {
     const element = document.getElementById('invoice-content');
     if (!element) return;
 
-    html2canvas(element as HTMLElement, {
+    (html2canvas as any)(element as HTMLElement, {
       scale: 3,
       useCORS: true,
       allowTaint: true,
       scrollX: 0,
       scrollY: -window.scrollY
-    }).then((canvas: any) => {
+    }).then((canvas: HTMLCanvasElement) => {
 
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
