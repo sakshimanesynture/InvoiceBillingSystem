@@ -47,7 +47,7 @@ export class TaxinvoiceComponent implements OnInit {
       allowTaint: true,
       scrollX: 0,
       scrollY: -window.scrollY
-    }).then((canvas: HTMLCanvasElement) => {
+    }).then((canvas: any) => {
 
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
