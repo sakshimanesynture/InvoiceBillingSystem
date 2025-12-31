@@ -28,7 +28,7 @@ export class InvoiceFormComponent implements OnInit {
     { name: 'FarmFerry', logo: '/assets/images/farmfarry.png' }
   ];
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -80,15 +80,15 @@ export class InvoiceFormComponent implements OnInit {
   }
 
   goToTaxInvoice() {
-  const data = {
-    ...this.form.value,
-    companyData: this.selectedCompany   // <-- VERY IMPORTANT
-  };
+    const data = {
+      ...this.form.value,
+      companyData: this.selectedCompany   // <-- VERY IMPORTANT
+    };
 
-  this.router.navigate(['/taxinvoice'], {
-    queryParams: { data: JSON.stringify(data) }
-  });
-}
+    this.router.navigate(['/taxinvoice'], {
+      queryParams: { data: JSON.stringify(data) }
+    });
+  }
 
 
 
@@ -104,7 +104,7 @@ export class InvoiceFormComponent implements OnInit {
     const data = document.getElementById('invoice-pdf');
     if (!data) return;
 
-    html2canvas(data, { scale: 2 }).then(canvas => {
+    html2canvas(data, { scale: 2 }).then((canvas: HTMLCanvasElement) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4');
 
